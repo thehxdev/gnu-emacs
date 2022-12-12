@@ -493,6 +493,7 @@
 
 ; ===================================================================== ;
 
+;; Magit
 ;(setq bare-git-dir (concat "--git-dir=" (expand-file-name "~/.dotfiles")))
 (setq bare-work-tree (concat "--work-tree=" (expand-file-name "~")))
 ;; use maggit on git bare repos like dotfiles repos, don't forget to change `bare-git-dir' and `bare-work-tree' to your needs
