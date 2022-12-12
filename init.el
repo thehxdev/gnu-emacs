@@ -33,8 +33,7 @@
   :config
   (general-evil-setup t))
 
-(delete-selection-mode t)
-(setq scroll-step            1
+(delete-selection-mode t) (setq scroll-step            1
       scroll-conservatively  10000)
 (setq scroll-margin 4)
 
@@ -242,6 +241,11 @@
 			 (tree-sitter-hl-mode)
                          (lsp))))
 
+(use-package ccls
+  :ensure t
+  :hook ((c-mode c++-mode objc-mode cuda-mode) .
+         (lambda () (require 'ccls) (setq ccls-executable "/usr/local/bin/ccls") (lsp))))
+
 ; ===================================================================== ;
 
 ;; NeoTree
@@ -402,9 +406,13 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (global-display-line-numbers-mode 1)
-(setq display-line-numbers-type 'relative)
+;(setq display-line-numbers-type 'relative)
 (global-visual-line-mode t)
 (global-hl-line-mode 1)
+
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
 
 ; ===================================================================== ;
 
@@ -412,6 +420,13 @@
 (use-package doom-modeline
   :ensure t)
 (doom-modeline-mode 1)
+
+; ===================================================================== ;
+
+(use-package vterm
+  :ensure t)
+(setq shell-file-name "/bin/fish"
+      vterm-max-scrollback 5000)
 
 ; ===================================================================== ;
 
@@ -423,7 +438,8 @@
  '(custom-safe-themes
    '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "631c52620e2953e744f2b56d102eae503017047fb43d65ce028e88ef5846ea3b" "7a424478cb77a96af2c0f50cfb4e2a88647b3ccca225f8c650ed45b7f50d9525" "aec7b55f2a13307a55517fdf08438863d694550565dee23181d2ebd973ebd6b8" "251ed7ecd97af314cd77b07359a09da12dcd97be35e3ab761d4a92d8d8cf9a71" "3fe1ebb870cc8a28e69763dde7b08c0f6b7e71cc310ffc3394622e5df6e4f0da" "b54376ec363568656d54578d28b95382854f62b74c32077821fdfd604268616a" "b99e334a4019a2caa71e1d6445fc346c6f074a05fcbb989800ecbe54474ae1b0" "944d52450c57b7cbba08f9b3d08095eb7a5541b0ecfb3a0a9ecd4a18f3c28948" default))
  '(ispell-dictionary nil)
- '(package-selected-packages '(vimrc-mode gcmh evil-collection evil use-package)))
+ '(package-selected-packages
+   '(vterm ccls vimrc-mode gcmh evil-collection evil use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
