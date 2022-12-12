@@ -465,10 +465,57 @@
 
 ; ===================================================================== ;
 
+;; Vterm
 (use-package vterm
   :ensure t)
 (setq shell-file-name "/bin/fish"
       vterm-max-scrollback 5000)
+
+;; Eshell
+(nvmap :prefix "SPC"
+       "e h"   '(counsel-esh-history :which-key "Eshell history")
+       "e s"   '(eshell :which-key "Eshell"))
+
+(use-package eshell-syntax-highlighting
+  :ensure t
+  :after esh-mode
+  :config
+  (eshell-syntax-highlighting-global-mode +1))
+
+(setq eshell-rc-script (concat user-emacs-directory "eshell/profile")
+      eshell-aliases-file (concat user-emacs-directory "eshell/aliases")
+      eshell-history-size 5000
+      eshell-buffer-maximum-lines 5000
+      eshell-hist-ignoredups t
+      eshell-scroll-to-bottom-on-input t
+      eshell-destroy-buffer-when-process-dies t
+      eshell-visual-commands'("bash" "fish" "htop" "ssh" "top" "zsh"))
+
+; ===================================================================== ;
+
+;(setq bare-git-dir (concat "--git-dir=" (expand-file-name "~/.dotfiles")))
+(setq bare-work-tree (concat "--work-tree=" (expand-file-name "~")))
+;; use maggit on git bare repos like dotfiles repos, don't forget to change `bare-git-dir' and `bare-work-tree' to your needs
+(defun me/magit-status-bare ()
+  "set --git-dir and --work-tree in `magit-git-global-arguments' to `bare-git-dir' and `bare-work-tree' and calls `magit-status'"
+  (interactive)
+  (require 'magit-git)
+  (add-to-list 'magit-git-global-arguments bare-git-dir)
+  (add-to-list 'magit-git-global-arguments bare-work-tree)
+  (call-interactively 'magit-status))
+
+;; if you use `me/magit-status-bare' you cant use `magit-status' on other other repos you have to unset `--git-dir' and `--work-tree'
+;; use `me/magit-status' insted it unsets those before calling `magit-status'
+(defun me/magit-status ()
+  "removes --git-dir and --work-tree in `magit-git-global-arguments' and calls `magit-status'"
+  (interactive)
+  (require 'magit-git)
+  (setq magit-git-global-arguments (remove bare-git-dir magit-git-global-arguments))
+  (setq magit-git-global-arguments (remove bare-work-tree magit-git-global-arguments))
+  (call-interactively 'magit-status))
+
+(use-package magit
+    :ensure t)
 
 ; ===================================================================== ;
 
@@ -504,7 +551,7 @@
    '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "631c52620e2953e744f2b56d102eae503017047fb43d65ce028e88ef5846ea3b" "7a424478cb77a96af2c0f50cfb4e2a88647b3ccca225f8c650ed45b7f50d9525" "aec7b55f2a13307a55517fdf08438863d694550565dee23181d2ebd973ebd6b8" "251ed7ecd97af314cd77b07359a09da12dcd97be35e3ab761d4a92d8d8cf9a71" "3fe1ebb870cc8a28e69763dde7b08c0f6b7e71cc310ffc3394622e5df6e4f0da" "b54376ec363568656d54578d28b95382854f62b74c32077821fdfd604268616a" "b99e334a4019a2caa71e1d6445fc346c6f074a05fcbb989800ecbe54474ae1b0" "944d52450c57b7cbba08f9b3d08095eb7a5541b0ecfb3a0a9ecd4a18f3c28948" default))
  '(ispell-dictionary nil)
  '(package-selected-packages
-   '(dashboard vterm ccls vimrc-mode gcmh evil-collection evil use-package)))
+   '(magit dashboard vterm ccls vimrc-mode gcmh evil-collection evil use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
