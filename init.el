@@ -33,9 +33,50 @@
   :config
   (general-evil-setup t))
 
-(delete-selection-mode t) (setq scroll-step            1
+(delete-selection-mode t)
+(setq scroll-step 1
       scroll-conservatively  10000)
-(setq scroll-margin 4)
+(setq scroll-margin 1)
+
+(winner-mode 1)
+(nvmap :prefix "SPC"
+       ;; Window splits
+       "w c"   '(evil-window-delete :which-key "Close window")
+       "w n"   '(evil-window-new :which-key "New window")
+       "w s"   '(evil-window-split :which-key "Horizontal split window")
+       "w v"   '(evil-window-vsplit :which-key "Vertical split window")
+       ;; Window motions
+       "w h"   '(evil-window-left :which-key "Window left")
+       "w j"   '(evil-window-down :which-key "Window down")
+       "w k"   '(evil-window-up :which-key "Window up")
+       "w l"   '(evil-window-right :which-key "Window right")
+       "w w"   '(evil-window-next :which-key "Goto next window")
+       ;; winner mode
+       "w <left>"  '(winner-undo :which-key "Winner undo")
+       "w <right>" '(winner-redo :which-key "Winner redo"))
+
+; ===================================================================== ;
+
+(use-package dashboard
+  :ensure t
+  :init      ;; tweak dashboard config before loading it
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
+  ;;(setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
+  (setq dashboard-startup-banner "~/.emacs.d/emacs-dash.png")  ;; use custom image as banner
+  (setq dashboard-center-content nil) ;; set to 't' for centered content
+  (setq dashboard-items '((recents . 5)
+                          (agenda . 5 )
+                          (bookmarks . 3)
+                          (projects . 3)
+                          (registers . 3)))
+  :config
+  (dashboard-setup-startup-hook)
+  (dashboard-modify-heading-icons '((recents . "file-text")
+			      (bookmarks . "book"))))
+
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 
 ; ===================================================================== ;
 
@@ -413,6 +454,7 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
+(setq c-basic-offset 4) 
 
 ; ===================================================================== ;
 
@@ -439,7 +481,7 @@
    '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "631c52620e2953e744f2b56d102eae503017047fb43d65ce028e88ef5846ea3b" "7a424478cb77a96af2c0f50cfb4e2a88647b3ccca225f8c650ed45b7f50d9525" "aec7b55f2a13307a55517fdf08438863d694550565dee23181d2ebd973ebd6b8" "251ed7ecd97af314cd77b07359a09da12dcd97be35e3ab761d4a92d8d8cf9a71" "3fe1ebb870cc8a28e69763dde7b08c0f6b7e71cc310ffc3394622e5df6e4f0da" "b54376ec363568656d54578d28b95382854f62b74c32077821fdfd604268616a" "b99e334a4019a2caa71e1d6445fc346c6f074a05fcbb989800ecbe54474ae1b0" "944d52450c57b7cbba08f9b3d08095eb7a5541b0ecfb3a0a9ecd4a18f3c28948" default))
  '(ispell-dictionary nil)
  '(package-selected-packages
-   '(vterm ccls vimrc-mode gcmh evil-collection evil use-package)))
+   '(dashboard vterm ccls vimrc-mode gcmh evil-collection evil use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -468,3 +510,4 @@
                      gcs-done)))
 
 ;; Silence compiler warnings as they can be pretty disruptive (setq comp-async-report-warnings-errors nil)
+
