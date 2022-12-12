@@ -65,12 +65,12 @@
   (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
   ;;(setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
   (setq dashboard-startup-banner "~/.emacs.d/emacs-dash.png")  ;; use custom image as banner
-  (setq dashboard-center-content nil) ;; set to 't' for centered content
-  (setq dashboard-items '((recents . 5)
-                          (agenda . 5 )
-                          (bookmarks . 3)
-                          (projects . 3)
-                          (registers . 3)))
+  (setq dashboard-center-content t) ;; set to 't' for centered content
+  ;(setq dashboard-items '((recents . 5)
+  ;                        (agenda . 5 )
+  ;                        (bookmarks . 3)
+  ;                        (projects . 3)
+  ;                        (registers . 3)))
   :config
   (dashboard-setup-startup-hook)
   (dashboard-modify-heading-icons '((recents . "file-text")
@@ -472,11 +472,11 @@
 
 ; ===================================================================== ;
 
-;; Using garbage magic hack.
- (use-package gcmh
-   :ensure t
-   :config
-   (gcmh-mode 1))
+; Using garbage magic hack.
+(use-package gcmh
+    :ensure t
+    :config
+    (gcmh-mode 1))
 ;; Setting garbage collection threshold
 (setq gc-cons-threshold 402653184
       gc-cons-percentage 0.6)
@@ -490,7 +490,7 @@
                               (time-subtract after-init-time before-init-time)))
                      gcs-done)))
 
-;; Make gc pauses faster by decreasing the threshold.
+; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))
 
 ; ===================================================================== ;
